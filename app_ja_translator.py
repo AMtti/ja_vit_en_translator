@@ -20,7 +20,7 @@ st.set_page_config(page_title="JA Translator (Offline)", layout="centered")
 def is_streamlit_cloud() -> bool:
     home = os.path.expanduser("~")
     return home.startswith("/app")
-
+st.write(is_streamlit_cloud())
 if is_streamlit_cloud():
     try:
         st.cache_data.clear()
