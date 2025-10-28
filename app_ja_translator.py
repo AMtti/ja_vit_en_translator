@@ -13,15 +13,17 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 # ----------------------------------------------------------
 st.set_page_config(page_title="JA Translator (Offline)", layout="centered")
 
-# ----------------------------------------------------------
-# Streamlitキャッシュを起動時にクリア（Cloudのみ）
-# ----------------------------------------------------------
+# ============================================
+# ここを切り替える
+# Cloudで動かすとき → True
+# ローカルで動かすとき → False
+# ============================================
+IS_STREAMLIT_CLOUD = True  # ← ★必要に応じて True / False を切り替え
 
-def is_streamlit_cloud() -> bool:
-    home = os.path.expanduser("~")
-    return home.startswith("/app")
-st.write(is_streamlit_cloud())
-if is_streamlit_cloud():
+# ----------------------------------------------------------
+# キャッシュ削除処理
+# ----------------------------------------------------------
+if IS_STREAMLIT_CLOUD:
     try:
         st.cache_data.clear()
         st.cache_resource.clear()
