@@ -24,7 +24,8 @@ def is_streamlit_cloud() -> bool:
     Streamlit Cloudでは環境変数 STREAMLIT_RUNTIME が 'cloud' になる。
     """
     return os.environ.get("STREAMLIT_RUNTIME", "").lower() == "cloud"
-
+st.write(f"Is Streamlit Cloud: {is_streamlit_cloud()}")
+st.write(os.environ.get("STREAMLIT_RUNTIME", "").lower())
 if is_streamlit_cloud():
     try:
         st.cache_data.clear()
