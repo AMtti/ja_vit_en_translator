@@ -18,12 +18,9 @@ st.set_page_config(page_title="JA Translator (Offline)", layout="centered")
 # ----------------------------------------------------------
 
 def is_streamlit_cloud() -> bool:
-    """
-     # Cloud上では True または "1" が設定される
-    """
-    return os.environ.get("STREAMLIT_SERVER_HEADLESS", "").lower() in ["true", "1"]
-st.write(f"Is Streamlit Cloud: {is_streamlit_cloud()}")
-st.write(os.environ.get("STREAMLIT_SERVER_HEADLESS", "").lower() in ["true", "1"])
+    home = os.path.expanduser("~")
+    return home.startswith("/app")
+
 if is_streamlit_cloud():
     try:
         st.cache_data.clear()
