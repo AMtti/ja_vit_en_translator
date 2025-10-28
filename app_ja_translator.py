@@ -18,20 +18,20 @@ st.set_page_config(page_title="JA Translator (Offline)", layout="centered")
 # Cloudで動かすとき → True
 # ローカルで動かすとき → False
 # ============================================
-IS_STREAMLIT_CLOUD = False  # ← ★必要に応じて True / False を切り替え
+IS_STREAMLIT_CLOUD = True  # ← ★必要に応じて True / False を切り替え
 
 # ----------------------------------------------------------
 # キャッシュ削除処理
 # ----------------------------------------------------------
-if IS_STREAMLIT_CLOUD:
+# 起動時キャッシュクリア（Cloudで最初の1回のみ）
+if IS_STREAMLIT_CLOUD and not st.session_state.get("_cleared_once", False):
     try:
         st.cache_data.clear()
         st.cache_resource.clear()
-        st.info("☁️ Streamlit Cloud環境：キャッシュを初期化しました。")
+        st.info("☁️ Cloud: 起動時にキャッシュを初期化しました。")
     except Exception as e:
-        st.warning(f"キャッシュ初期化時に問題が発生しました: {e}")
-else:
-    st.caption("💻 ローカル環境：キャッシュを保持して高速起動します。")
+        st.warning(f"キャッシュ初期化時の警告: {e}")
+    st.session_state["_cleared_once"] = True  # ← 以後は消さない
 
 # PyTorch + Streamlit の警告を減らす
 os.environ["STREAMLIT_WATCHER_TYPE"] = "none"
@@ -120,6 +120,3 @@ st.caption("""
 💡 初回のみモデル (~1.2GB) をダウンロードします。
 以降はオフラインで利用可能です。
 """)
-
-
-
