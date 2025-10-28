@@ -18,7 +18,7 @@ st.set_page_config(page_title="JA Translator (Offline)", layout="centered")
 # Cloudで動かすとき → True
 # ローカルで動かすとき → False
 # ============================================
-IS_STREAMLIT_CLOUD = False  # ← ★必要に応じて True / False を切り替え
+IS_STREAMLIT_CLOUD = True  # ← ★必要に応じて True / False を切り替え
 
 # ----------------------------------------------------------
 # キャッシュ削除処理
@@ -120,4 +120,5 @@ st.caption("""
 💡 初回のみモデル (~1.2GB) をダウンロードします。
 以降はオフラインで利用可能です。
 """)
+
 
