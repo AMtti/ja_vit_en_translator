@@ -13,6 +13,28 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 # ----------------------------------------------------------
 st.set_page_config(page_title="JA Translator (Offline)", layout="centered")
 
+# ----------------------------------------------------------
+# Streamlitキャッシュを起動時にクリア（Cloudのみ）
+# ----------------------------------------------------------
+import os
+
+def is_streamlit_cloud() -> bool:
+    """
+    Streamlit Cloud上で動いているかを判定する。
+    Streamlit Cloudでは環境変数 STREAMLIT_RUNTIME が 'cloud' になる。
+    """
+    return os.environ.get("STREAMLIT_RUNTIME", "").lower() == "cloud"
+
+if is_streamlit_cloud():
+    try:
+        st.cache_data.clear()
+        st.cache_resource.clear()
+        st.info("☁️ Streamlit Cloud環境：キャッシュを初期化しました。")
+    except Exception as e:
+        st.warning(f"キャッシュ初期化時に問題が発生しました: {e}")
+else:
+    st.caption("💻 ローカル環境：キャッシュを保持して高速起動します。")
+
 # PyTorch + Streamlit の警告を減らす
 os.environ["STREAMLIT_WATCHER_TYPE"] = "none"
 
