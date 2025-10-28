@@ -16,16 +16,14 @@ st.set_page_config(page_title="JA Translator (Offline)", layout="centered")
 # ----------------------------------------------------------
 # Streamlitキャッシュを起動時にクリア（Cloudのみ）
 # ----------------------------------------------------------
-import os
 
 def is_streamlit_cloud() -> bool:
     """
-    Streamlit Cloud上で動いているかを判定する。
-    Streamlit Cloudでは環境変数 STREAMLIT_RUNTIME が 'cloud' になる。
+     # Cloud上では True または "1" が設定される
     """
-    return os.environ.get("STREAMLIT_RUNTIME", "").lower() == "cloud"
+    return os.environ.get("STREAMLIT_SERVER_HEADLESS", "").lower() in ["true", "1"]
 st.write(f"Is Streamlit Cloud: {is_streamlit_cloud()}")
-st.write(os.environ.get("STREAMLIT_RUNTIME", "").lower())
+st.write(os.environ.get("STREAMLIT_SERVER_HEADLESS", "").lower() in ["true", "1"])
 if is_streamlit_cloud():
     try:
         st.cache_data.clear()
