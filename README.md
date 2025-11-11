@@ -1,124 +1,146 @@
-
-
-# 🇯🇵➡️🇻🇳🇬🇧 JA → VI / EN Translator (Streamlit App)
-
-日本語の文章を **ベトナム語** または **英語** に翻訳できるシンプルな Streamlit アプリです。
-ローカルでも、[Streamlit Cloud](https://share.streamlit.io) 上でも動作します。
+# 🌐 JA Translator (Offline)
+**日本語 → ベトナム語／英語 翻訳アプリ（完全ローカル動作）**
 
 ---
 
-## 🌐 アプリ概要
-
-このアプリは Meta 社の多言語モデル
-[`facebook/m2m100_418M`](https://huggingface.co/facebook/m2m100_418M)
-を使用して、日本語から複数言語への高品質な機械翻訳を行います。
-
-* **入力言語:** 日本語（固定）
-* **出力言語:** ベトナム語 🇻🇳 または 英語 🇬🇧
-* **利用モデル:** facebook/m2m100_418M（約1.2GB）
+## 🧩 概要
+このアプリは [facebook/m2m100_418M](https://huggingface.co/facebook/m2m100_418M) モデルを使用した  
+**オフライン翻訳アプリ**です。  
+インターネット接続なしで、ローカルの PC 上で日本語テキストを  
+**ベトナム語**または**英語**に翻訳できます。
 
 ---
 
-## 🧠 使用技術
-
-| 種類       | 技術                                                              |
-| -------- | --------------------------------------------------------------- |
-| フレームワーク  | [Streamlit](https://streamlit.io/)                              |
-| モデルライブラリ | [Transformers](https://huggingface.co/docs/transformers)        |
-| モデル提供元   | [Meta AI (M2M100)](https://huggingface.co/facebook/m2m100_418M) |
-| 推論エンジン   | [PyTorch](https://pytorch.org/)                                 |
-| 文字分割     | [SentencePiece](https://github.com/google/sentencepiece)        |
+## 🚀 主な特徴
+- ✅ **完全オフライン動作**（Hugging Face Hub へのアクセスなし）
+- ✅ **Streamlit ベースの簡単UI**
+- ✅ **GPU (CUDA) 対応**：自動で FP16 変換・高速化
+- ✅ **モデルキャッシュ付き**：2回目以降は高速起動
+- ✅ **翻訳結果のコピー／再利用も簡単**
 
 ---
 
-## ⚙️ セットアップ方法（ローカル実行）
-
-1. Python をインストール（3.10〜3.12 推奨）
-2. このリポジトリをクローン
-
-   ```bash
-   git clone https://github.com/AMtti/ja_vit_en_translator.git
-   cd ja_vit_en_translator
-   ```
-3. 必要ライブラリをインストール
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. アプリを起動
-
-   ```bash
-   streamlit run app_ja_translator.py
-   ```
-5. ブラウザで表示
-
-   ```
-   http://localhost:8501
-   ```
-
----
-
-## ☁️ Streamlit Cloud での公開方法
-
-1. GitHub リポジトリを作成（Public）
-2. `app_ja_translator.py` と `requirements.txt` をアップロード
-3. [Streamlit Cloud](https://share.streamlit.io) にアクセス
-4. 「New app」→ リポジトリを選択
-5. メインファイルパスに以下を指定して「Deploy」
-
-   ```
-   app_ja_translator.py
-   ```
-
-📌 初回起動時のみモデル（約1.2GB）のダウンロードが行われます。
-以降はキャッシュを利用して高速に動作します。
-
----
-
-## 💡 サンプル入力
-
+## 📁 ディレクトリ構成
 ```
-この製品は炭素鋼SS400を使用しています。
+📦 JA-Translator-Offline/
+├─ app.py                         ← Streamlit アプリ本体
+├─ models_facebook_m2m100_418M.zip ← 圧縮済モデルファイル（展開して使用）
+└─ README.md
 ```
 
-**出力（ベトナム語）**
-
+展開後の構成：
 ```
-Sản phẩm này sử dụng thép cacbon SS400.
-```
-
-**出力（英語）**
-
-```
-This product uses carbon steel SS400.
+📦 JA-Translator-Offline/
+├─ app.py
+├─ models/
+│   └─ facebook/
+│       └─ m2m100_418M/
+│           ├─ config.json
+│           ├─ pytorch_model.bin
+│           ├─ tokenizer.json
+│           ├─ sentencepiece.bpe.model
+│           └─ ...（その他ファイル）
+└─ README.md
 ```
 
 ---
 
-## 🧩 フォルダ構成
+## 🛠️ セットアップ方法
 
+### ① リポジトリをクローン
+```bash
+git clone https://github.com/あなたのユーザー名/JA-Translator-Offline.git
+cd JA-Translator-Offline
 ```
-ja_vit_en_translator/
-├── app_ja_translator.py   # Streamlitアプリ本体
-├── requirements.txt       # 依存ライブラリ
-└── README.md              # この説明ファイル
+
+### ② モデルファイルを展開
+zip を展開して、次の構成にしてください：
+
+```bash
+models_facebook_m2m100_418M.zip → models/facebook/m2m100_418M/
+```
+
+例（Windows PowerShell）：
+```powershell
+Expand-Archive .\models_facebook_m2m100_418M.zip -DestinationPath .\models\facebook\m2m100_418M
 ```
 
 ---
 
-## 🧑‍💻 開発者メモ
+## 💻 実行方法
 
-* 最初の翻訳リクエスト時はモデルのロードに 2〜4 分ほどかかります。
-* GPU 環境（例: Streamlit Cloud Premium / Colab / ローカル GPU）では高速に動作します。
-* Hugging Face Hub のキャッシュ機構を利用して、2回目以降の翻訳は即時応答します。
+### 1. 仮想環境を作成（推奨）
+```bash
+python -m venv StreamlitApps
+.\StreamlitApps\Scripts\activate
+```
+
+### 2. 依存ライブラリをインストール
+```bash
+pip install -r requirements.txt
+```
+
+もし `requirements.txt` がない場合は以下を実行：
+```bash
+pip install streamlit torch transformers
+```
+
+### 3. アプリを起動
+```bash
+streamlit run app.py
+```
+
+ブラウザが自動的に開きます：
+```
+http://localhost:8501
+```
 
 ---
 
-## 📜 ライセンス
-
-MIT License
-© 2025 AMtti
+## 🌍 使い方
+1. 左サイドバーで翻訳先を選択（ベトナム語 or 英語）  
+2. テキストエリアに日本語を入力  
+3. 「翻訳する」ボタンをクリック  
+4. 下部に翻訳結果が表示されます  
 
 ---
 
+## ⚙️ 環境変数（内部設定）
+アプリ内で自動的に次の環境変数が設定されます：
+```python
+os.environ["HF_HUB_OFFLINE"] = "1"
+os.environ["TRANSFORMERS_OFFLINE"] = "1"
+```
+→ Hugging Face Hub へのアクセスを遮断し、完全オフラインを保証します。
 
+---
+
+## ⚡ GPU 利用について
+CUDA が有効な場合、自動的に `FP16` モードで GPU にモデルをロードします。  
+CPU 環境でも動作しますが、翻訳速度はやや遅くなります。
+
+---
+
+## 📦 .exe化（オプション）
+アプリを単一ファイルとして配布したい場合：
+
+```bash
+pyinstaller --noconfirm --onefile --add-data "models;models" app.py
+```
+
+出力先：
+```
+dist/app.exe
+```
+
+---
+
+## 📚 参考
+- モデル: [facebook/m2m100_418M](https://huggingface.co/facebook/m2m100_418M)
+- Transformers: [https://github.com/huggingface/transformers](https://github.com/huggingface/transformers)
+- Streamlit: [https://streamlit.io](https://streamlit.io)
+
+---
+
+## 利用上の注意
+このアプリは試作品です🙇
