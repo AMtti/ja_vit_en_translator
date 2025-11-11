@@ -11,27 +11,18 @@
 
 ---
 
-## 🚀 主な特徴
-- ✅ **完全オフライン動作**（Hugging Face Hub へのアクセスなし）
-- ✅ **Streamlit ベースの簡単UI**
-- ✅ **GPU (CUDA) 対応**：自動で FP16 変換・高速化
-- ✅ **モデルキャッシュ付き**：2回目以降は高速起動
-- ✅ **翻訳結果のコピー／再利用も簡単**
-
----
-
 ## 📁 ディレクトリ構成
 ```
-📦 JA-Translator-Offline/
-├─ app.py                         ← Streamlit アプリ本体
+📦 ja_vit_en_translator_m2m100_418M/
+├─ m2m100_418M_streamlit.py                         ← Streamlit アプリ本体
 ├─ models_facebook_m2m100_418M.zip ← 圧縮済モデルファイル（展開して使用）
 └─ README.md
 ```
 
 展開後の構成：
 ```
-📦 JA-Translator-Offline/
-├─ app.py
+📦  ja_vit_en_translator_m2m100_418M/
+├─  m2m100_418M_streamlit.py
 ├─ models/
 │   └─ facebook/
 │       └─ m2m100_418M/
@@ -49,8 +40,8 @@
 
 ### ① リポジトリをクローン
 ```bash
-git clone https://github.com/あなたのユーザー名/JA-Translator-Offline.git
-cd JA-Translator-Offline
+git clone https://github.com/AMtti/ja_vit_en_translator.git
+cd ja_vit_en_translator_m2m100_418M
 ```
 
 ### ② モデルファイルを展開
@@ -90,10 +81,8 @@ pip install streamlit torch transformers
 streamlit run app.py
 ```
 
-ブラウザが自動的に開きます：
-```
-http://localhost:8501
-```
+ブラウザが自動的に開きます
+
 
 ---
 
@@ -118,20 +107,6 @@ os.environ["TRANSFORMERS_OFFLINE"] = "1"
 ## ⚡ GPU 利用について
 CUDA が有効な場合、自動的に `FP16` モードで GPU にモデルをロードします。  
 CPU 環境でも動作しますが、翻訳速度はやや遅くなります。
-
----
-
-## 📦 .exe化（オプション）
-アプリを単一ファイルとして配布したい場合：
-
-```bash
-pyinstaller --noconfirm --onefile --add-data "models;models" app.py
-```
-
-出力先：
-```
-dist/app.exe
-```
 
 ---
 
