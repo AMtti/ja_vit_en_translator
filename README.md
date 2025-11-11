@@ -59,7 +59,7 @@ python download_model.py
 models/facebook/m2m100_418M/
 ```
 
-これで `app.py` がローカルモデルを自動認識して動作します。
+これで `m2m100_418M_streamlit.py` がローカルモデルを自動認識して動作します。
 
 ---
 
