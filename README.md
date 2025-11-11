@@ -11,28 +11,55 @@
 
 ---
 
+
 ## 📁 ディレクトリ構成
 ```
-📦 ja_vit_en_translator_m2m100_418M/
-├─ m2m100_418M_streamlit.py                         ← Streamlit アプリ本体
-├─ models_facebook_m2m100_418M.zip ← 圧縮済モデルファイル（展開して使用）
+📦 JA-Translator-Offline/
+├─ m2m100_418M_streamlit.py                        ← Streamlit アプリ本体
+├─ tools/
+│   └─ download_model.py         ← モデルを自動ダウンロードするスクリプト
+├─ models/                       ← モデル格納先（初回は空でもOK）
 └─ README.md
 ```
 
-展開後の構成：
+---
+
+## 💾 モデルの入手方法
+
+GitHub にはモデルを含めていません（サイズが約1.2GBのため）。  
+以下のスクリプトで自動ダウンロードしてください。
+
+### 📜 `tools/download_model.py`
+```python
+# tools/download_model.py
+from huggingface_hub import snapshot_download
+from pathlib import Path
+
+# 変更可: 保存先
+TARGET_DIR = Path(__file__).resolve().parents[1] / "models" / "facebook" / "m2m100_418M"
+
+if __name__ == "__main__":
+    TARGET_DIR.parent.mkdir(parents=True, exist_ok=True)
+    snapshot_download(
+        repo_id="facebook/m2m100_418M",
+        local_dir=str(TARGET_DIR),
+        local_dir_use_symlinks=False
+    )
+    print(f"Downloaded to: {TARGET_DIR}")
 ```
-📦  ja_vit_en_translator_m2m100_418M/
-├─  m2m100_418M_streamlit.py
-├─ models/
-│   └─ facebook/
-│       └─ m2m100_418M/
-│           ├─ config.json
-│           ├─ pytorch_model.bin
-│           ├─ tokenizer.json
-│           ├─ sentencepiece.bpe.model
-│           └─ ...（その他ファイル）
-└─ README.md
+
+### 🪄 実行手順
+```bash
+cd tools
+python download_model.py
 ```
+
+完了後、次のフォルダが生成されます：
+```
+models/facebook/m2m100_418M/
+```
+
+これで `app.py` がローカルモデルを自動認識して動作します。
 
 ---
 
@@ -40,49 +67,31 @@
 
 ### ① リポジトリをクローン
 ```bash
-git clone https://github.com/AMtti/ja_vit_en_translator.git
-cd ja_vit_en_translator_m2m100_418M
+git clone https://github.com/あなたのユーザー名/JA-Translator-Offline.git
+cd JA-Translator-Offline
 ```
 
-### ② モデルファイルを展開
-zip を展開して、次の構成にしてください：
-
-```bash
-models_facebook_m2m100_418M.zip → models/facebook/m2m100_418M/
-```
-
-例（Windows PowerShell）：
-```powershell
-Expand-Archive .\models_facebook_m2m100_418M.zip -DestinationPath .\models\facebook\m2m100_418M
-```
-
----
-
-## 💻 実行方法
-
-### 1. 仮想環境を作成（推奨）
-```bash
-python -m venv StreamlitApps
-.\StreamlitApps\Scripts\activate
-```
-
-### 2. 依存ライブラリをインストール
+### ② 依存ライブラリをインストール
 ```bash
 pip install -r requirements.txt
 ```
 
-もし `requirements.txt` がない場合は以下を実行：
+または手動で：
 ```bash
-pip install streamlit torch transformers
+pip install streamlit torch transformers huggingface_hub
 ```
 
-### 3. アプリを起動
+### ③ モデルをダウンロード
 ```bash
-streamlit run app.py
+python tools/download_model.py
+```
+
+### ④ アプリを起動
+```bash
+streamlit run m2m100_418M_streamlit.py
 ```
 
 ブラウザが自動的に開きます
-
 
 ---
 
@@ -108,14 +117,16 @@ os.environ["TRANSFORMERS_OFFLINE"] = "1"
 CUDA が有効な場合、自動的に `FP16` モードで GPU にモデルをロードします。  
 CPU 環境でも動作しますが、翻訳速度はやや遅くなります。
 
+
 ---
 
 ## 📚 参考
-- モデル: [facebook/m2m100_418M](https://huggingface.co/facebook/m2m100_418M)
-- Transformers: [https://github.com/huggingface/transformers](https://github.com/huggingface/transformers)
-- Streamlit: [https://streamlit.io](https://streamlit.io)
+- モデル: [facebook/m2m100_418M](https://huggingface.co/facebook/m2m100_418M)  
+- Transformers: [https://github.com/huggingface/transformers](https://github.com/huggingface/transformers)  
+- Streamlit: [https://streamlit.io](https://streamlit.io)  
+- Hugging Face Hub CLI: [https://huggingface.co/docs/huggingface_hub](https://huggingface.co/docs/huggingface_hub)
 
 ---
 
-## 利用上の注意
-このアプリは試作品です🙇
+## 利用上の注意！
+このアプリは試作品です。
