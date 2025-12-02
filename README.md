@@ -16,6 +16,7 @@
 ```
 📦 JA-Translator-Offline/
 ├─ m2m100_418M_streamlit.py                        ← Streamlit アプリ本体
+├─ pdf_translate_viewer_all.py                     ← PyQt6で作成したアプリ、PDFから文字列取得
 ├─ tools/
 │   └─ download_model.py         ← モデルを自動ダウンロードするスクリプト
 ├─ models/                       ← モデル格納先（初回は空でもOK）
