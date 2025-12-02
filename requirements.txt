@@ -1,5 +1,10 @@
+# === Streamlit 版 ===
 transformers>=4.44
 torch
 sentencepiece==0.2.1
 accelerate==1.11.0
 streamlit==1.44.1
+# === PyQt6　PDF対応版 ===
+PyQt6==6.10.0
+pdfplumber==0.11.8
+
